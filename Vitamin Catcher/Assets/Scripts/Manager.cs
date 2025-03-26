@@ -11,6 +11,7 @@ public class Manager : MonoBehaviour
     public GameObject[] immunityPrefabs;
     public GameObject[] socialPrefabs;
     public GameObject[] bonePrefabs;
+    public GameObject[] virusPrefabs;
     public int immunityCount = 0;
     public int socialCount = 0;
     public int boneCount = 0;
@@ -41,32 +42,40 @@ public class Manager : MonoBehaviour
 
     public void SpawnManager()
     {
-        if(currentLevel == 0)
+        int randVirus = Random.Range(0, 10);
+        if(randVirus < 8)
         {
-            temp = Random.Range(0, immunityPrefabs.Length);
-            while(immunityList.Contains(temp))
+            if (currentLevel == 0)
             {
                 temp = Random.Range(0, immunityPrefabs.Length);
+                while (immunityList.Contains(temp))
+                {
+                    temp = Random.Range(0, immunityPrefabs.Length);
+                }
+                Instantiate(immunityPrefabs[temp], spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity, collectiblesParent.transform);
             }
-            Instantiate(immunityPrefabs[temp], spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity, collectiblesParent.transform);            
-        }
-        else if(currentLevel == 1)
-        {
-            temp = Random.Range(0, socialPrefabs.Length);
-            while (socialList.Contains(temp))
+            else if (currentLevel == 1)
             {
                 temp = Random.Range(0, socialPrefabs.Length);
+                while (socialList.Contains(temp))
+                {
+                    temp = Random.Range(0, socialPrefabs.Length);
+                }
+                Instantiate(socialPrefabs[temp], spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity, collectiblesParent.transform);
             }
-            Instantiate(socialPrefabs[temp], spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity, collectiblesParent.transform);
-        }
-        else if (currentLevel == 2)
-        {
-            temp = Random.Range(0, bonePrefabs.Length);
-            while (boneList.Contains(temp))
+            else if (currentLevel == 2)
             {
                 temp = Random.Range(0, bonePrefabs.Length);
+                while (boneList.Contains(temp))
+                {
+                    temp = Random.Range(0, bonePrefabs.Length);
+                }
+                Instantiate(bonePrefabs[temp], spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity, collectiblesParent.transform);
             }
-            Instantiate(bonePrefabs[temp], spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity, collectiblesParent.transform);
+        }
+        else
+        {
+            Instantiate(virusPrefabs[Random.Range(0,virusPrefabs.Length)], spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity, collectiblesParent.transform);
         }
     }
 

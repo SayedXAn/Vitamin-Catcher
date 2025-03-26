@@ -18,6 +18,8 @@ public class PlayerControl : MonoBehaviour, IPointerDownHandler, IDragHandler, I
         // Keep Y position fixed, only update X position
         Vector3 newPosition = Input.mousePosition;
         newPosition.y = rectTransform.position.y; // Lock Y position
+        newPosition.x = Mathf.Clamp(newPosition.x, 70f, 1000f);
+        Debug.Log("newPosition.x == " + newPosition.x);
         transform.position = newPosition;
     }
 
@@ -45,7 +47,8 @@ public class PlayerControl : MonoBehaviour, IPointerDownHandler, IDragHandler, I
         }
         else if(collision.gameObject.tag == "virus")
         {
-            Destroy(collision.gameObject) ;
+            Destroy(collision.gameObject);
+            mngr.StartSpawn();
         }
     }
 }

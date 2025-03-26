@@ -73,3 +73,6 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 /Vitamin Catcher/Assets/TextMesh Pro
 /Vitamin Catcher/UserSettings
+/Vitamin Catcher/Library
+/Vitamin Catcher/Logs
+/Vitamin Catcher/Temp
