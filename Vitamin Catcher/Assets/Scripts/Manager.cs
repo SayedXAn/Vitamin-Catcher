@@ -12,14 +12,13 @@ public class Manager : MonoBehaviour
     public GameObject[] socialPrefabs;
     public GameObject[] bonePrefabs;
     public GameObject[] virusPrefabs;
-    public int immunityCount = 0;
-    public int socialCount = 0;
-    public int boneCount = 0;
     public List<int> immunityList = new List<int>();
     public List<int> socialList = new List<int>();
     public List<int> boneList = new List<int>();
     public int currentLevel = 0;
     public int temp = -1;
+    public float delay = 1f;
+    public OrbBehaiviour orbMan;
     void Start()
     {
         StartCoroutine(SpawnAVitamin());
@@ -36,7 +35,7 @@ public class Manager : MonoBehaviour
     }
     IEnumerator SpawnAVitamin()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(delay);
         SpawnManager();
     }
 
@@ -84,7 +83,8 @@ public class Manager : MonoBehaviour
         if(currentLevel == 0)
         {
             immunityList.Add(temp);
-            if(immunityList.Count == immunityPrefabs.Length)
+            orbMan.ActivateOrb(currentLevel, (float)immunityList.Count / immunityPrefabs.Length);
+            if (immunityList.Count == immunityPrefabs.Length)
             {
                 currentLevel = 1;
             }
@@ -94,6 +94,7 @@ public class Manager : MonoBehaviour
         else if (currentLevel == 1)
         {
             socialList.Add(temp);
+            orbMan.ActivateOrb(currentLevel, (float)socialList.Count / socialPrefabs.Length);
             if (socialList.Count == socialPrefabs.Length)
             {
                 currentLevel = 2;
@@ -104,6 +105,7 @@ public class Manager : MonoBehaviour
         else if (currentLevel == 2)
         {
             boneList.Add(temp);
+            orbMan.ActivateOrb(currentLevel, (float)boneList.Count / bonePrefabs.Length);
             if (boneList.Count == bonePrefabs.Length)
             {
                 //currentLevel = 2;
@@ -116,5 +118,9 @@ public class Manager : MonoBehaviour
             }
             
         }
+    }
+    public void VirusHit()
+    {
+        orbMan.DestroyOrb();
     }
 }
