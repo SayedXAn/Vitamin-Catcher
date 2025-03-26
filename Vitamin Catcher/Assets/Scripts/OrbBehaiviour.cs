@@ -7,6 +7,7 @@ public class OrbBehaiviour : MonoBehaviour
     public Image orb;
     public Color32[] levelColors;
     private int currentColor = 0;
+
     void Start()
     {
         DOTween.Init();

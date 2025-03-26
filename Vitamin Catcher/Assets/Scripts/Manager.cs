@@ -2,6 +2,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using DG.Tweening;
 
 public class Manager : MonoBehaviour
 {
@@ -19,9 +21,13 @@ public class Manager : MonoBehaviour
     public int temp = -1;
     public float delay = 1f;
     public OrbBehaiviour orbMan;
+    public TMP_Text notification;
+    private bool prevVirus = false;
     void Start()
     {
+        DOTween.Init();
         StartCoroutine(SpawnAVitamin());
+        Notification("LEVEL IMMUNITY");
     }
 
     // Update is called once per frame
@@ -42,8 +48,9 @@ public class Manager : MonoBehaviour
     public void SpawnManager()
     {
         int randVirus = Random.Range(0, 10);
-        if(randVirus < 8)
+        if(randVirus < 7 || prevVirus)
         {
+            prevVirus = false;
             if (currentLevel == 0)
             {
                 temp = Random.Range(0, immunityPrefabs.Length);
@@ -74,6 +81,7 @@ public class Manager : MonoBehaviour
         }
         else
         {
+            prevVirus = true;
             Instantiate(virusPrefabs[Random.Range(0,virusPrefabs.Length)], spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity, collectiblesParent.transform);
         }
     }
@@ -87,6 +95,7 @@ public class Manager : MonoBehaviour
             if (immunityList.Count == immunityPrefabs.Length)
             {
                 currentLevel = 1;
+                Notification("LEVEL UP!\nSOCIAL COGNITION");
             }
             temp = -1;
             StartSpawn();
@@ -98,6 +107,7 @@ public class Manager : MonoBehaviour
             if (socialList.Count == socialPrefabs.Length)
             {
                 currentLevel = 2;
+                Notification("LEVEL UP!\nBONES & MUSCLES");
             }
             temp = -1;
             StartSpawn();
@@ -109,6 +119,7 @@ public class Manager : MonoBehaviour
             if (boneList.Count == bonePrefabs.Length)
             {
                 //currentLevel = 2;
+                Notification("YOU WIN!");
                 Debug.Log("Game Win!!!!!!!!!!!!!");
             }
             else
@@ -122,5 +133,18 @@ public class Manager : MonoBehaviour
     public void VirusHit()
     {
         orbMan.DestroyOrb();
+    }
+
+    public void Notification(string noti)
+    {
+        notification.text = noti;
+        notification.color = orbMan.levelColors[currentLevel];
+        Sequence mySeq = DOTween.Sequence();
+        mySeq.Append(notification.DOFade(1f, 0.5f));
+        mySeq.Append(notification.DOFade(0.5f, 0.5f));
+        mySeq.Append(notification.DOFade(1f, 0.5f));
+        mySeq.Append(notification.DOFade(0.5f, 0.5f));
+        mySeq.Append(notification.DOFade(1f, 0.5f));
+        mySeq.Append(notification.DOFade(0f, 0.5f));
     }
 }
