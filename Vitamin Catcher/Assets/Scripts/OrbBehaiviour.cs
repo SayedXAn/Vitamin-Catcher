@@ -5,6 +5,7 @@ using DG.Tweening;
 public class OrbBehaiviour : MonoBehaviour
 {
     public Image orb;
+    public Image[] healthBars;
     public Color32[] levelColors;
     private int currentColor = 0;
 
@@ -21,6 +22,7 @@ public class OrbBehaiviour : MonoBehaviour
 
     public void ActivateOrb(int level, float opct)
     {
+        healthBars[level].DOFillAmount(opct, 0.5f);
         if(currentColor != level)
         {
             currentColor = level;

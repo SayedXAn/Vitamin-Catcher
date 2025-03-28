@@ -7,6 +7,9 @@ TagManager:
   - player
   - vitamin
   - virus
+  - immunity
+  - social
+  - bones
   layers:
   - Default
   - TransparentFX

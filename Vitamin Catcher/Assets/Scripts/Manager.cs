@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,19 +11,23 @@ public class Manager : MonoBehaviour
     public GameObject player;
     public GameObject collectiblesParent;
     public GameObject[] spawnPoints;
-    public GameObject[] immunityPrefabs;
-    public GameObject[] socialPrefabs;
-    public GameObject[] bonePrefabs;
+    public GameObject[] cPrefabs;
     public GameObject[] virusPrefabs;
-    public List<int> immunityList = new List<int>();
-    public List<int> socialList = new List<int>();
-    public List<int> boneList = new List<int>();
+    public List<int> cList = new List<int>();
     public int currentLevel = 0;
     public int temp = -1;
     public float delay = 1f;
     public OrbBehaiviour orbMan;
     public TMP_Text notification;
     private bool prevVirus = false;
+    private const int immunityCount = 5;
+    private const int socialCount = 7;
+    private const int bonesCount = 3;
+    private int immunityCatched = 0;
+    private int socialCatched = 0;
+    private int bonesCatched = 0;
+    private int virusHitCount = 0;
+    private bool gameOn = true;
     void Start()
     {
         DOTween.Init();
@@ -44,7 +49,10 @@ public class Manager : MonoBehaviour
     }
     public void StartSpawn()
     {
-        StartCoroutine(SpawnAVitamin());
+        if(gameOn)
+        {
+            StartCoroutine(SpawnAVitamin());
+        }
     }
     IEnumerator SpawnAVitamin()
     {
@@ -55,7 +63,28 @@ public class Manager : MonoBehaviour
     public void SpawnManager()
     {
         int randVirus = Random.Range(0, 10);
-        if(randVirus < 7 || prevVirus)
+        if(!gameOn)
+        {
+            return;
+        }
+        else if ( (randVirus < 7 || prevVirus) && cList.Count < (immunityCount + socialCount + bonesCount))
+        {
+            prevVirus = false;
+            temp = Random.Range(0, cPrefabs.Length);
+            while (cList.Contains(temp) )
+            {
+                temp = Random.Range(0, cPrefabs.Length);
+            }
+            Instantiate(cPrefabs[temp], spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity, collectiblesParent.transform);
+        }
+        else if(!prevVirus)
+        {
+            prevVirus = true;
+            Instantiate(virusPrefabs[Random.Range(0, virusPrefabs.Length)], spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity, collectiblesParent.transform);
+        }
+        StartSpawn();
+
+        /*if(randVirus < 7 || prevVirus)
         {
             prevVirus = false;
             if (currentLevel == 0)
@@ -91,39 +120,46 @@ public class Manager : MonoBehaviour
             prevVirus = true;
             Instantiate(virusPrefabs[Random.Range(0,virusPrefabs.Length)], spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity, collectiblesParent.transform);
         }
+        */
+
     }
 
-    public void CheckCollectibleHit()
+    public void CheckCollectibleHit(int cLevel)
     {
-        if(currentLevel == 0)
+        if(!gameOn)
         {
-            immunityList.Add(temp);
-            orbMan.ActivateOrb(currentLevel, (float)immunityList.Count / immunityPrefabs.Length);
-            if (immunityList.Count == immunityPrefabs.Length)
+            return;
+        }
+        else if(currentLevel == 0 && cLevel == 0 && immunityCatched < immunityCount && !cList.Contains(temp))
+        {
+            cList.Add(temp);
+            immunityCatched++;
+            orbMan.ActivateOrb(currentLevel, (float)immunityCatched / immunityCount);
+            if (immunityCatched == immunityCount)
             {
                 currentLevel = 1;
                 Notification("LEVEL UP!\nSOCIAL COGNITION");
             }
-            temp = -1;
-            StartSpawn();
+            temp = -1;            
         }
-        else if (currentLevel == 1)
+        else if (currentLevel == 1 && cLevel == 1 && socialCatched < socialCount && !cList.Contains(temp))
         {
-            socialList.Add(temp);
-            orbMan.ActivateOrb(currentLevel, (float)socialList.Count / socialPrefabs.Length);
-            if (socialList.Count == socialPrefabs.Length)
+            cList.Add(temp);
+            socialCatched++;
+            orbMan.ActivateOrb(currentLevel, (float)socialCatched / socialCount);
+            if (socialCatched == socialCount)
             {
                 currentLevel = 2;
                 Notification("LEVEL UP!\nBONES & MUSCLES");
             }
             temp = -1;
-            StartSpawn();
         }
-        else if (currentLevel == 2)
+        else if (currentLevel == 2 && cLevel == 2 && bonesCatched < bonesCount && !cList.Contains(temp))
         {
-            boneList.Add(temp);
-            orbMan.ActivateOrb(currentLevel, (float)boneList.Count / bonePrefabs.Length);
-            if (boneList.Count == bonePrefabs.Length)
+            cList.Add(temp);
+            bonesCatched++;
+            orbMan.ActivateOrb(currentLevel, (float)bonesCatched / bonesCount);
+            if (bonesCatched == bonesCount)
             {
                 //currentLevel = 2;
                 Notification("YOU WIN!");
@@ -132,14 +168,20 @@ public class Manager : MonoBehaviour
             else
             {
                 temp = -1;
-                StartSpawn();
             }
             
         }
+        //StartSpawn();
     }
     public void VirusHit()
     {
         orbMan.DestroyOrb();
+        virusHitCount++;
+        if(virusHitCount == 3)
+        {
+            gameOn = false;
+            Notification("Game Over!");
+        }
     }
 
     public void Notification(string noti)
