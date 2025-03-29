@@ -40,20 +40,21 @@ public class PlayerControl : MonoBehaviour, IPointerDownHandler, IDragHandler, I
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        int id = collision.gameObject.GetComponent<forCollectibles>().cID;
         if(collision.gameObject.tag == "immunity")
         {
             Destroy(collision.gameObject);
-            mngr.CheckCollectibleHit(0);
+            mngr.CheckCollectibleHit(0, id);
         }
         else if (collision.gameObject.tag == "social")
         {
             Destroy(collision.gameObject);
-            mngr.CheckCollectibleHit(1);
+            mngr.CheckCollectibleHit(1, id);
         }
         else if (collision.gameObject.tag == "bones")
         {
             Destroy(collision.gameObject);
-            mngr.CheckCollectibleHit(2);
+            mngr.CheckCollectibleHit(2, id);
         }
         else if(collision.gameObject.tag == "virus")
         {

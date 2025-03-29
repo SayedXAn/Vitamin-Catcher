@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vit C Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 7445021094271338378, guid: f414889e87001da46924f61b43894e25, type: 3}
+      propertyPath: cID
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7791873496192045852, guid: f414889e87001da46924f61b43894e25, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

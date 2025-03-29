@@ -13,6 +13,7 @@ public class Manager : MonoBehaviour
     public GameObject[] spawnPoints;
     public GameObject[] cPrefabs;
     public GameObject[] virusPrefabs;
+    public Image[] hearts;
     public List<int> cList = new List<int>();
     public int currentLevel = 0;
     public int temp = -1;
@@ -27,12 +28,11 @@ public class Manager : MonoBehaviour
     private int socialCatched = 0;
     private int bonesCatched = 0;
     private int virusHitCount = 0;
-    private bool gameOn = true;
+    private int prevC = -1;
+    private bool gameOn = false;
     void Start()
     {
-        DOTween.Init();
-        StartCoroutine(SpawnAVitamin());
-        Notification("LEVEL IMMUNITY");
+        DOTween.Init();        
     }
 
     // Update is called once per frame
@@ -44,8 +44,14 @@ public class Manager : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.R))
         {
-            SceneManager.LoadScene(0);
+            RestartGame();
         }
+    }
+    public void StartButton()
+    {
+        gameOn = true;
+        StartCoroutine(SpawnAVitamin());
+        Notification("LEVEL IMMUNITY");
     }
     public void StartSpawn()
     {
@@ -71,10 +77,11 @@ public class Manager : MonoBehaviour
         {
             prevVirus = false;
             temp = Random.Range(0, cPrefabs.Length);
-            while (cList.Contains(temp) )
+            while (cList.Contains(temp) || (cList.Count < cPrefabs.Length-1 && temp == prevC))
             {
                 temp = Random.Range(0, cPrefabs.Length);
             }
+            prevC = temp;
             Instantiate(cPrefabs[temp], spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity, collectiblesParent.transform);
         }
         else if(!prevVirus)
@@ -124,15 +131,15 @@ public class Manager : MonoBehaviour
 
     }
 
-    public void CheckCollectibleHit(int cLevel)
+    public void CheckCollectibleHit(int cLevel, int cID)
     {
         if(!gameOn)
         {
             return;
         }
-        else if(currentLevel == 0 && cLevel == 0 && immunityCatched < immunityCount && !cList.Contains(temp))
+        else if(currentLevel == 0 && cLevel == 0 && immunityCatched < immunityCount && !cList.Contains(cID))
         {
-            cList.Add(temp);
+            cList.Add(cID);
             immunityCatched++;
             orbMan.ActivateOrb(currentLevel, (float)immunityCatched / immunityCount);
             if (immunityCatched == immunityCount)
@@ -142,9 +149,9 @@ public class Manager : MonoBehaviour
             }
             temp = -1;            
         }
-        else if (currentLevel == 1 && cLevel == 1 && socialCatched < socialCount && !cList.Contains(temp))
+        else if (currentLevel == 1 && cLevel == 1 && socialCatched < socialCount && !cList.Contains(cID))
         {
-            cList.Add(temp);
+            cList.Add(cID);
             socialCatched++;
             orbMan.ActivateOrb(currentLevel, (float)socialCatched / socialCount);
             if (socialCatched == socialCount)
@@ -154,16 +161,18 @@ public class Manager : MonoBehaviour
             }
             temp = -1;
         }
-        else if (currentLevel == 2 && cLevel == 2 && bonesCatched < bonesCount && !cList.Contains(temp))
+        else if (currentLevel == 2 && cLevel == 2 && bonesCatched < bonesCount && !cList.Contains(cID))
         {
-            cList.Add(temp);
+            cList.Add(cID);
             bonesCatched++;
             orbMan.ActivateOrb(currentLevel, (float)bonesCatched / bonesCount);
             if (bonesCatched == bonesCount)
             {
+                gameOn = false;
                 //currentLevel = 2;
                 Notification("YOU WIN!");
                 Debug.Log("Game Win!!!!!!!!!!!!!");
+                StartCoroutine(ResetGame());
             }
             else
             {
@@ -175,12 +184,18 @@ public class Manager : MonoBehaviour
     }
     public void VirusHit()
     {
+        if (!gameOn)
+        {
+            return;
+        }
         orbMan.DestroyOrb();
         virusHitCount++;
+        hearts[virusHitCount-1].gameObject.SetActive(false);
         if(virusHitCount == 3)
         {
             gameOn = false;
             Notification("Game Over!");
+            StartCoroutine(ResetGame());
         }
     }
 
@@ -195,5 +210,15 @@ public class Manager : MonoBehaviour
         mySeq.Append(notification.DOFade(0.5f, 0.5f));
         mySeq.Append(notification.DOFade(1f, 0.5f));
         mySeq.Append(notification.DOFade(0f, 0.5f));
+    }
+
+    IEnumerator ResetGame()
+    {
+        yield return new WaitForSeconds(3);
+        RestartGame();
+    }
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(0);
     }
 }
