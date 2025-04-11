@@ -20,6 +20,7 @@ public class Manager : MonoBehaviour
     public float delay = 1f;
     public OrbBehaiviour orbMan;
     public TMP_Text notification;
+    public Image notificationBG;
     private bool prevVirus = false;
     private const int immunityCount = 5;
     private const int socialCount = 7;
@@ -201,15 +202,19 @@ public class Manager : MonoBehaviour
 
     public void Notification(string noti)
     {
+        
         notification.text = noti;
         notification.color = orbMan.levelColors[currentLevel];
         Sequence mySeq = DOTween.Sequence();
+        mySeq.Append(notificationBG.DOFade(1, 0.2f));
         mySeq.Append(notification.DOFade(1f, 0.5f));
         mySeq.Append(notification.DOFade(0.5f, 0.5f));
         mySeq.Append(notification.DOFade(1f, 0.5f));
         mySeq.Append(notification.DOFade(0.5f, 0.5f));
         mySeq.Append(notification.DOFade(1f, 0.5f));
         mySeq.Append(notification.DOFade(0f, 0.5f));
+        mySeq.Append(notificationBG.DOFade(0, 0.2f));
+
     }
 
     IEnumerator ResetGame()
