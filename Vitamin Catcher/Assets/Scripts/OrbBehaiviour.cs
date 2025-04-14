@@ -12,6 +12,11 @@ public class OrbBehaiviour : MonoBehaviour
     void Start()
     {
         DOTween.Init();
+        orb.color = levelColors[0];
+        for (int i = 0; i < healthBars.Length; i++)
+        {
+            healthBars[i].color = new Color32(levelColors[i].r, levelColors[i].g, levelColors[i].b, 255);
+        }
     }
 
 

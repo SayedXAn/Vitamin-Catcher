@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0.85098046, a: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -211,15 +211,15 @@ MonoBehaviour:
   orb: {fileID: 3102645}
   healthBars:
   - {fileID: 78144537}
-  - {fileID: 300573534}
   - {fileID: 912945315}
+  - {fileID: 300573534}
   levelColors:
   - serializedVersion: 2
-    rgba: 14286592
+    rgba: 16720128
   - serializedVersion: 2
-    rgba: 16711903
+    rgba: 0
   - serializedVersion: 2
-    rgba: 49407
+    rgba: 1418754
 --- !u!95 &3102648
 Animator:
   serializedVersion: 7
@@ -575,8 +575,16 @@ PrefabInstance:
       value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 3713698680903508193, guid: 8a890b434ddd0c9478219b5aa52fcdd5, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3713698680903508193, guid: 8a890b434ddd0c9478219b5aa52fcdd5, type: 3}
       propertyPath: m_Color.g
-      value: 0.7529412
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3713698680903508193, guid: 8a890b434ddd0c9478219b5aa52fcdd5, type: 3}
+      propertyPath: m_Color.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3713698680903508193, guid: 8a890b434ddd0c9478219b5aa52fcdd5, type: 3}
       propertyPath: m_FillAmount
@@ -1116,6 +1124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4559db68ad7948a49bd20b2d35cb2863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerImage: {fileID: 822260330}
   mngr: {fileID: 1824248225}
 --- !u!1 &831972633
 GameObject:
@@ -1314,11 +1323,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3713698680903508193, guid: 8a890b434ddd0c9478219b5aa52fcdd5, type: 3}
       propertyPath: m_Color.b
-      value: 1
+      value: 0.08045413
+      objectReference: {fileID: 0}
+    - target: {fileID: 3713698680903508193, guid: 8a890b434ddd0c9478219b5aa52fcdd5, type: 3}
+      propertyPath: m_Color.g
+      value: 0.6509434
       objectReference: {fileID: 0}
     - target: {fileID: 3713698680903508193, guid: 8a890b434ddd0c9478219b5aa52fcdd5, type: 3}
       propertyPath: m_Color.r
-      value: 0.8745098
+      value: 0.009211446
       objectReference: {fileID: 0}
     - target: {fileID: 3713698680903508193, guid: 8a890b434ddd0c9478219b5aa52fcdd5, type: 3}
       propertyPath: m_FillAmount
@@ -2002,8 +2015,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 16777215
-  m_fontColor: {r: 1, g: 1, b: 1, a: 0}
+    rgba: 0
+  m_fontColor: {r: 0, g: 0, b: 0, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2508,8 +2521,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 279764637}
-  - {fileID: 870094090}
   - {fileID: 347458999}
+  - {fileID: 870094090}
   m_Father: {fileID: 1465439019}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -2593,7 +2606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 1}
+  m_Color: {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2736,7 +2749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3713698680903508193, guid: 8a890b434ddd0c9478219b5aa52fcdd5, type: 3}
       propertyPath: m_Color.b
-      value: 0.8509804
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3713698680903508193, guid: 8a890b434ddd0c9478219b5aa52fcdd5, type: 3}
       propertyPath: m_Color.g
@@ -2744,7 +2757,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3713698680903508193, guid: 8a890b434ddd0c9478219b5aa52fcdd5, type: 3}
       propertyPath: m_Color.r
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3713698680903508193, guid: 8a890b434ddd0c9478219b5aa52fcdd5, type: 3}
       propertyPath: m_FillAmount

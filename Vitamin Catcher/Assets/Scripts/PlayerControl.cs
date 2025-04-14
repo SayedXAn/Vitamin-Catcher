@@ -5,14 +5,8 @@ using UnityEngine.EventSystems;
 public class PlayerControl : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     private RectTransform rectTransform;
-    private Image image;
+    public Image playerImage;
     public Manager mngr;
-
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        image.color = new Color32(255, 255, 255, 170);
-    }
-
     public void OnDrag(PointerEventData eventData)
     {
         // Keep Y position fixed, only update X position
@@ -23,19 +17,19 @@ public class PlayerControl : MonoBehaviour, IPointerDownHandler, IDragHandler, I
         transform.position = newPosition;
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    public void OnPointerDown(PointerEventData eventData)
     {
-        image.color = new Color32(255, 255, 255, 255);
+        playerImage.color = new Color32(255, 255, 255, 210);
     }
 
-    public void OnPointerDown(PointerEventData eventData) { }
-
-    public void OnPointerUp(PointerEventData eventData) { }
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        playerImage.color = new Color32(255, 255, 255, 255);
+    }
 
     private void Start()
     {
         rectTransform = GetComponent<RectTransform>();
-        image = GetComponent<Image>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -46,12 +40,12 @@ public class PlayerControl : MonoBehaviour, IPointerDownHandler, IDragHandler, I
             Destroy(collision.gameObject);
             mngr.CheckCollectibleHit(0, id);
         }
-        else if (collision.gameObject.tag == "social")
+        else if (collision.gameObject.tag == "bones")
         {
             Destroy(collision.gameObject);
             mngr.CheckCollectibleHit(1, id);
         }
-        else if (collision.gameObject.tag == "bones")
+        else if (collision.gameObject.tag == "social")
         {
             Destroy(collision.gameObject);
             mngr.CheckCollectibleHit(2, id);

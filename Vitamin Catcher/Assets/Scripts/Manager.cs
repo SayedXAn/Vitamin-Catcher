@@ -146,28 +146,28 @@ public class Manager : MonoBehaviour
             if (immunityCatched == immunityCount)
             {
                 currentLevel = 1;
-                Notification("LEVEL UP!\nSOCIAL COGNITION");
+                Notification("LEVEL UP!\nBONES & MUSCLES");
             }
             temp = -1;            
         }
-        else if (currentLevel == 1 && cLevel == 1 && socialCatched < socialCount && !cList.Contains(cID))
-        {
-            cList.Add(cID);
-            socialCatched++;
-            orbMan.ActivateOrb(currentLevel, (float)socialCatched / socialCount);
-            if (socialCatched == socialCount)
-            {
-                currentLevel = 2;
-                Notification("LEVEL UP!\nBONES & MUSCLES");
-            }
-            temp = -1;
-        }
-        else if (currentLevel == 2 && cLevel == 2 && bonesCatched < bonesCount && !cList.Contains(cID))
+        else if (currentLevel == 1 && cLevel == 1 && bonesCatched < bonesCount && !cList.Contains(cID))
         {
             cList.Add(cID);
             bonesCatched++;
             orbMan.ActivateOrb(currentLevel, (float)bonesCatched / bonesCount);
             if (bonesCatched == bonesCount)
+            {
+                currentLevel = 2;
+                Notification("LEVEL UP!\nSOCIAL COGNITION");
+            }
+            temp = -1;
+        }
+        else if (currentLevel == 2 && cLevel == 2 &&   socialCatched < socialCount && !cList.Contains(cID))
+        {
+            cList.Add(cID);
+            socialCatched++;
+            orbMan.ActivateOrb(currentLevel, (float)socialCatched / socialCount);
+            if (socialCatched == socialCount)
             {
                 gameOn = false;
                 //currentLevel = 2;
@@ -202,11 +202,12 @@ public class Manager : MonoBehaviour
 
     public void Notification(string noti)
     {
-        
+        //Color32 temp = orbMan.levelColors[currentLevel];
+        //notificationBG.color = new Color32((byte)(255 - temp.r), (byte)(255 - temp.g), (byte)(255 - temp.b), 255);
         notification.text = noti;
         notification.color = orbMan.levelColors[currentLevel];
         Sequence mySeq = DOTween.Sequence();
-        mySeq.Append(notificationBG.DOFade(1, 0.2f));
+        mySeq.Append(notificationBG.DOFade(0.6f, 0.2f));
         mySeq.Append(notification.DOFade(1f, 0.5f));
         mySeq.Append(notification.DOFade(0.5f, 0.5f));
         mySeq.Append(notification.DOFade(1f, 0.5f));
