@@ -9,13 +9,19 @@ public class PlayerControl : MonoBehaviour, IPointerDownHandler, IDragHandler, I
     public Manager mngr;
     public void OnDrag(PointerEventData eventData)
     {
-        // Keep Y position fixed, only update X position
-        Vector3 newPosition = Input.mousePosition;
-        newPosition.y = rectTransform.position.y; // Lock Y position
-        newPosition.x = Mathf.Clamp(newPosition.x, 70f, 1000f);
-        //Debug.Log("newPosition.x == " + newPosition.x);
-        transform.position = newPosition;
+        Vector3 worldPoint;
+        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(rectTransform, eventData.position, eventData.pressEventCamera, out worldPoint))
+        {
+            // Lock Y axis
+            worldPoint.y = rectTransform.position.y;
+
+            // Clamp X position (in world space)
+            worldPoint.x = Mathf.Clamp(worldPoint.x, -2.3f, 2.3f);
+
+            transform.position = worldPoint;
+        }
     }
+
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -30,6 +36,11 @@ public class PlayerControl : MonoBehaviour, IPointerDownHandler, IDragHandler, I
     private void Start()
     {
         rectTransform = GetComponent<RectTransform>();
+    }
+
+    private void Update()
+    {
+        Debug.Log(transform.position.x);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

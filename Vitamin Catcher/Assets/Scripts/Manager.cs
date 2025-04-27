@@ -10,6 +10,7 @@ public class Manager : MonoBehaviour
 {
     public GameObject player;
     public GameObject collectiblesParent;
+    public GameObject confetti;
     public GameObject[] spawnPoints;
     public GameObject[] cPrefabs;
     public GameObject[] virusPrefabs;
@@ -31,9 +32,18 @@ public class Manager : MonoBehaviour
     private int virusHitCount = 0;
     private int prevC = -1;
     private bool gameOn = false;
+    public AudioSource bgm;
+    public AudioSource sfx;
+    public AudioClip[] clips;
+
     void Start()
     {
-        DOTween.Init();        
+        DOTween.Init();
+        confetti.SetActive(false);
+        if(!bgm.isPlaying)
+        {
+            bgm.Play();
+        }
     }
 
     // Update is called once per frame
@@ -140,30 +150,38 @@ public class Manager : MonoBehaviour
         }
         else if(currentLevel == 0 && cLevel == 0 && immunityCatched < immunityCount && !cList.Contains(cID))
         {
+            sfx.clip = clips[0];
+            sfx.Play();
             cList.Add(cID);
             immunityCatched++;
             orbMan.ActivateOrb(currentLevel, (float)immunityCatched / immunityCount);
             if (immunityCatched == immunityCount)
             {
                 currentLevel = 1;
+                StartCoroutine(LevelUpConfetti());
                 Notification("LEVEL UP!\nBONES & MUSCLES");
             }
             temp = -1;            
         }
         else if (currentLevel == 1 && cLevel == 1 && bonesCatched < bonesCount && !cList.Contains(cID))
         {
+            sfx.clip = clips[0];
+            sfx.Play();
             cList.Add(cID);
             bonesCatched++;
             orbMan.ActivateOrb(currentLevel, (float)bonesCatched / bonesCount);
             if (bonesCatched == bonesCount)
             {
                 currentLevel = 2;
+                StartCoroutine(LevelUpConfetti());
                 Notification("LEVEL UP!\nSOCIAL COGNITION");
             }
             temp = -1;
         }
         else if (currentLevel == 2 && cLevel == 2 &&   socialCatched < socialCount && !cList.Contains(cID))
         {
+            sfx.clip = clips[0];
+            sfx.Play();
             cList.Add(cID);
             socialCatched++;
             orbMan.ActivateOrb(currentLevel, (float)socialCatched / socialCount);
@@ -171,6 +189,7 @@ public class Manager : MonoBehaviour
             {
                 gameOn = false;
                 //currentLevel = 2;
+                confetti.SetActive(true);
                 Notification("YOU WIN!");
                 Debug.Log("Game Win!!!!!!!!!!!!!");
                 StartCoroutine(ResetGame());
@@ -181,6 +200,11 @@ public class Manager : MonoBehaviour
             }
             
         }
+        else
+        {
+            sfx.clip = clips[1];
+            sfx.Play();
+        }
         //StartSpawn();
     }
     public void VirusHit()
@@ -189,6 +213,8 @@ public class Manager : MonoBehaviour
         {
             return;
         }
+        sfx.clip = clips[2];
+        sfx.Play();
         orbMan.DestroyOrb();
         virusHitCount++;
         hearts[virusHitCount-1].gameObject.SetActive(false);
@@ -226,5 +252,12 @@ public class Manager : MonoBehaviour
     public void RestartGame()
     {
         SceneManager.LoadScene(0);
+    }
+
+    IEnumerator LevelUpConfetti()
+    {
+        confetti.SetActive(true);
+        yield return new WaitForSeconds(2);
+        confetti.SetActive(false);
     }
 }

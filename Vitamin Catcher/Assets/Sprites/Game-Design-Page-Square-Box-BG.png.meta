@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Game-Design-Page-Square-Box-BG_0: 6051009407588668247
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
