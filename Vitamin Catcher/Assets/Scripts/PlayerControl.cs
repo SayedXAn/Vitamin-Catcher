@@ -40,7 +40,7 @@ public class PlayerControl : MonoBehaviour, IPointerDownHandler, IDragHandler, I
 
     private void Update()
     {
-        Debug.Log(transform.position.x);
+        //Debug.Log(transform.position.x);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
